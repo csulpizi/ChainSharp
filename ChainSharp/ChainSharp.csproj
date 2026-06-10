@@ -8,7 +8,9 @@
     <PackageDescription>A functional chaining library allowing chaining synchronous or asynchronous functions together. Enables writing idiomatic lambdas and closures without deeply nested functions or unnecessary bindings.</PackageDescription>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageIcon>icon.png</PackageIcon>
+    <PackageId>csulpizi.ChainSharp</PackageId>
     <PackageProjectUrl>https://github.com/csulpizi/ChainSharp</PackageProjectUrl>
+    <PackageTags>functional,extensions,tasks,chaining,piping</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
