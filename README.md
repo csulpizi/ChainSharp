@@ -1,5 +1,7 @@
 ![ChainSharp](ChainSharp/icon.png)
 
+[![NuGet version (csulpizi.ChainSharp)](https://img.shields.io/nuget/v/Newtonsoft.Json.svg?style=flat-square)](https://www.nuget.org/packages/csulpizi.ChainSharp/)
+
 A functional chaining library allowing you to chain both synchronous and asynchronous functions together. Enables writing idiomatic lambdas and closures without deeply nested functions or unnecessary bindings.
 
 ## Usage
