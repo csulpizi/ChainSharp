@@ -1,4 +1,4 @@
-using static ChainSharp.ChainSharp;
+using ChainSharp;
 
 namespace Test;
 
@@ -6,8 +6,6 @@ namespace Test;
 public sealed class Exceptions
 {
     static int CountStringLength(object s) => ((string)s).Length;
-
-    static async Task<int> CountStringLengthFromTask(Task<object> t) => CountStringLength(await t);
 
     static string SillyString(int x)
     {
@@ -24,7 +22,7 @@ public sealed class Exceptions
     [TestMethod]
     public void TestUntypedCatch()
     {
-        var Foo = Chain<object>().Then(CountStringLength).Catch((_, _) => 0).Then(SillyString);
+        var Foo = Chain.Init<object>().Then(CountStringLength).Catch((_, _) => 0).Then(SillyString);
 
         Assert.AreEqual("55555", Foo("silly"));
         Assert.AreEqual("0", Foo(19));
@@ -33,7 +31,8 @@ public sealed class Exceptions
     [TestMethod]
     public void TestTypedCatchSuccess()
     {
-        var Foo = Chain<object>()
+        var Foo = Chain
+            .Init<object>()
             .Then(CountStringLength)
             .Catch((InvalidCastException e, object _) => 0)
             .Then(SillyString);
@@ -45,7 +44,8 @@ public sealed class Exceptions
     [TestMethod]
     public void TestTypedCatchFailure()
     {
-        var Foo = Chain<object>()
+        var Foo = Chain
+            .Init<object>()
             .Then(CountStringLength)
             .Catch((DivideByZeroException e, object _) => 0)
             .Then(SillyString);
@@ -65,7 +65,8 @@ public sealed class Exceptions
     [TestMethod]
     public async Task TestAsyncUntypedCatch()
     {
-        var Foo = Chain<object>()
+        var Foo = Chain
+            .Init<object>()
             .Then(Taskify)
             .WaitThen(CountStringLength)
             .Catch((_, _) => 0)
@@ -78,7 +79,8 @@ public sealed class Exceptions
     [TestMethod]
     public async Task TestAsyncTypedCatchSuccess()
     {
-        var Foo = Chain<object>()
+        var Foo = Chain
+            .Init<object>()
             .Then(Taskify)
             .WaitThen(CountStringLength)
             .Catch((InvalidCastException e, object _) => 0)
@@ -91,7 +93,8 @@ public sealed class Exceptions
     [TestMethod]
     public async Task TestAsyncTypedCatchFailure()
     {
-        var Foo = Chain<object>()
+        var Foo = Chain
+            .Init<object>()
             .Then(Taskify)
             .WaitThen(CountStringLength)
             .Catch((DivideByZeroException e, object _) => 0)

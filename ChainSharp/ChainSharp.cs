@@ -14,7 +14,7 @@ namespace ChainSharp;
 /// Provides out of the box support for Nullable<T> monadic patterns,
 ///  and can be extended to provide support for other monads
 /// </summary>
-public static class ChainSharp
+public static class Chain
 {
     /// <summary>
     /// Creates the starting point of a chain.
@@ -22,7 +22,7 @@ public static class ChainSharp
     ///  or any func F<T, T2>
     /// </summary>
     /// <typeparam name="T">The input type for the chain</typeparam>
-    public static Func<T, T> Chain<T>() => x => x;
+    public static Func<T, T> Init<T>() => x => x;
 
     /// <summary>
     /// Adds the func `f` to the chain
@@ -50,7 +50,7 @@ public static class ChainSharp
     }
 
     /// <summary>
-    /// '.Then()' but gracefully handles null coalescence
+    /// '.Then()' but gracefully handles null handling
     /// </summary>
     /// <param name="f">The function to chain</param>
     public static Func<TIn, TOut?> ThenOrNull<TIn, TMiddle, TOut>(
@@ -61,7 +61,18 @@ public static class ChainSharp
         where TOut : struct => @this.Then<TIn, TMiddle?, TOut?>(x => x is null ? null : f(x.Value));
 
     /// <summary>
-    /// '.Then()' but gracefully handles null coalescence
+    /// '.Then()' but gracefully handles null handling
+    /// </summary>
+    /// <param name="f">The function to chain</param>
+    public static Func<TIn, TOut?> ThenOrNull<TIn, TMiddle, TOut>(
+        this Func<TIn, TMiddle?> @this,
+        Func<TMiddle, TOut> f
+    )
+        where TMiddle : class
+        where TOut : struct => @this.Then<TIn, TMiddle?, TOut?>(x => x is null ? null : f(x));
+
+    /// <summary>
+    /// '.Then()' but gracefully handles null handling
     /// </summary>
     /// <param name="f">The function to chain</param>
     public static Func<TIn, TOut?> ThenOrNull<TIn, TMiddle, TOut>(
@@ -72,7 +83,18 @@ public static class ChainSharp
         where TOut : struct => @this.Then(x => x is null ? null : f(x.Value));
 
     /// <summary>
-    /// '.WaitThen()' but gracefully handles null coalescence
+    /// '.Then()' but gracefully handles null handling
+    /// </summary>
+    /// <param name="f">The function to chain</param>
+    public static Func<TIn, TOut?> ThenOrNull<TIn, TMiddle, TOut>(
+        this Func<TIn, TMiddle?> @this,
+        Func<TMiddle, TOut?> f
+    )
+        where TMiddle : class
+        where TOut : struct => @this.Then(x => x is null ? null : f(x));
+
+    /// <summary>
+    /// '.WaitThen()' but gracefully handles null handling
     /// </summary>
     /// <param name="f">The function to chain</param>
     public static Func<TIn, Task<TOut?>> WaitThenOrNull<TIn, TMiddle, TOut>(
@@ -84,7 +106,18 @@ public static class ChainSharp
         @this.WaitThen<TIn, TMiddle?, TOut?>(x => x is null ? null : f(x.Value));
 
     /// <summary>
-    /// '.WaitThen()' but gracefully handles null coalescence
+    /// '.WaitThen()' but gracefully handles null handling
+    /// </summary>
+    /// <param name="f">The function to chain</param>
+    public static Func<TIn, Task<TOut?>> WaitThenOrNull<TIn, TMiddle, TOut>(
+        this Func<TIn, Task<TMiddle?>> @this,
+        Func<TMiddle, TOut> f
+    )
+        where TMiddle : class
+        where TOut : struct => @this.WaitThen<TIn, TMiddle?, TOut?>(x => x is null ? null : f(x));
+
+    /// <summary>
+    /// '.WaitThen()' but gracefully handles null handling
     /// </summary>
     /// <param name="f">The function to chain</param>
     public static Func<TIn, Task<TOut?>> WaitThenOrNull<TIn, TMiddle, TOut>(
@@ -93,6 +126,17 @@ public static class ChainSharp
     )
         where TMiddle : struct
         where TOut : struct => @this.WaitThen(x => x is null ? null : f(x.Value));
+
+    /// <summary>
+    /// '.WaitThen()' but gracefully handles null handling
+    /// </summary>
+    /// <param name="f">The function to chain</param>
+    public static Func<TIn, Task<TOut?>> WaitThenOrNull<TIn, TMiddle, TOut>(
+        this Func<TIn, Task<TMiddle?>> @this,
+        Func<TMiddle, TOut?> f
+    )
+        where TMiddle : class
+        where TOut : struct => @this.WaitThen(x => x is null ? null : f(x));
 
     /// <summary>
     /// Adds a catch around the chained function, catching an exception

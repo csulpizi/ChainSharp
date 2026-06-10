@@ -1,4 +1,5 @@
-using static ChainSharp.ChainSharp;
+using System.Collections.Specialized;
+using ChainSharp;
 
 namespace Test;
 
@@ -19,7 +20,7 @@ public sealed class Core
     [TestMethod]
     public void SyncTest()
     {
-        var foo = Chain<string>().Then(Caps).Then(Cat).Then(Caps);
+        var foo = Chain.Init<string>().Then(Caps).Then(Cat).Then(Caps);
 
         Assert.AreEqual("WOAH HELLO!", foo("woah"));
     }
@@ -27,7 +28,7 @@ public sealed class Core
     [TestMethod]
     public async Task AsyncTest()
     {
-        var foo = Chain<string>().Then(Caps).Then(Taskify).WaitThen(Cat).WaitThen(Caps);
+        var foo = Chain.Init<string>().Then(Caps).Then(Taskify).WaitThen(Cat).WaitThen(Caps);
 
         Assert.AreEqual("WOAH HELLO!", await foo("woah"));
     }

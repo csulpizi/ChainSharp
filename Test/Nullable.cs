@@ -1,4 +1,4 @@
-using static ChainSharp.ChainSharp;
+using ChainSharp;
 
 namespace Test;
 
@@ -21,7 +21,7 @@ public class TestNullables
     [TestMethod]
     public void TestThenOrNull()
     {
-        var foo = Chain<int>().Then(EvenOrNull).ThenOrNull(Increase).Then(SillyString);
+        var foo = Chain.Init<int>().Then(EvenOrNull).ThenOrNull(Increase).Then(SillyString);
 
         Assert.AreEqual("Hi!5", foo(4));
         Assert.AreEqual("Hi!", foo(5));
@@ -30,7 +30,8 @@ public class TestNullables
     [TestMethod]
     public async Task TestWaitThenOrNull()
     {
-        var foo = Chain<int>()
+        var foo = Chain
+            .Init<int>()
             .Then(EvenOrNull)
             .Then(Taskify)
             .WaitThenOrNull(Increase)
