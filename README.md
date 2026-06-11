@@ -43,4 +43,4 @@ Func<Email, string?> GetUserNameForEmail = Chain<Email>()
 
 ### Error Handling
 
-Similarly, using a custom monad can be useful for handling errors mid-chain. For example, in middleware or API routing, you could define a monad e.g. `ValueOrHttpError<T>` that can be used to catch specific exceptions and pass them through to the end of the chain for handling by the server loop.
+Similarly, using a custom monad can be useful for handling errors mid-chain. For example, in middleware or API routing, you could define a monad e.g. `ValueOrHttpError<T>` that can be used to catch specific exceptions and pass the relevant status code and message through the chain to be handled by the server loop.
